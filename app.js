@@ -98,7 +98,7 @@ app.post('/signup', bodyParser.urlencoded({extended: true}), (req, res) => {
 		// Set session and render index
 		req.session.user = user
 		res.redirect('/')
-	}).catch( (error) => {
+	}).catch( error => {
 		console.log(error)
 	})
 })
