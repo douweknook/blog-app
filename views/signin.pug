@@ -1,0 +1,51 @@
+doctype html
+html
+	head
+		link(href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet")
+		link(type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection")
+		link(type="text/css" rel="stylesheet" href="css/style.css")
+		title Blog App
+
+	body
+		nav
+			div.nav-wrapper
+				div.container
+					a(href='/', class='brand-logo') Logo
+
+		div.container
+			div.row
+				div.col.s12.m12.l12
+					ul.tabs
+						li.tab.col.s3: a(href='#signin' ) Sign In
+						li.tab.col.s3: a(href='#signup' ) Sign Up
+
+			div#signin.col.s12
+				div.row
+					div.input-field.col.s12.m12.l12
+						form(method="post" action="/signin")
+							input(type="text", name="signin[username]", id="si-username", placeholder="Username", class="validate")
+							input(type="password", name="signin[password]", id="si-password", placeholder="Password", class="validate")
+							button(type="submit" class="waves-effect waves-light btn", id="submit-signin") Sign In
+
+			div#signup.col.s12
+				div.row
+					div.input-field.col.s12.m12.l12
+						form(method="post" action="/signup")
+							input(type="text", name="signup[username]", id="su-username", placeholder="Username", class="validate")
+							input(type="password", name="signup[password]", id="su-password", placeholder="Password", class="validate")
+							input(type="password", name="signup[password-check]", id="su-password-check", placeholder="Re-enter Password", class="validate")
+							input(type="email", name="signup[email]", id="su-email", placeholder="Email", class="validate")
+							button(type="submit" class="waves-effect waves-light btn", id="submit-signup") Sign Up
+
+		main
+
+		footer.page-footer
+			div.container
+				div.row
+					div.col.s12.m12.l12
+						h5.white-text Footer
+
+
+		script(type="text/javascript" src="js/jquery.min.js")
+		script(type="text/javascript" src="js/materialize.min.js")
+		//- script(type="text/javascript" src="js/main.js")
