@@ -7,21 +7,24 @@ html
 		title Blog App
 
 	body
-		nav
-			div.nav-wrapper
-				div.container
-					a(href='/', class='brand-logo') Logo
-
-		div.container
-			h1 hello world
+		header
+			include ./templates/nav.pug
 
 		main
-
-		footer.page-footer
 			div.container
-				div.row
-					div.col.s12.m12.l12
-						h5.white-text Footer
+				- var i = 0
+				for post in posts
+					div.row
+						div.col.s12.m12.l12
+							div.card
+								div.card-content.text-white
+									span.card-title #{post.title}
+									p #{post.text}
+								div.card-action.align-right
+									a(href="#comments"+i, id="#comments"+i) Show Comments
+									- i++
+
+		include ./templates/footer.pug
 
 
 		script(type="text/javascript" src="js/jquery.min.js")

@@ -50,61 +50,128 @@ User.hasMany(Post); 	Post.belongsTo(User)
 User.hasMany(Comment); 	Comment.belongsTo(User)
 Post.hasMany(Comment); 	Comment.belongsTo(Post)
 
-// Create routes
-app.get('/signin', (req, res) => {
-	res.render('signin')
-})
-
 app.get('/', (req, res) => {
-	let user = req.session.user
-	console.log('user from session', req.session)
-	if (user === undefined) {
+	if (req.session.user === undefined) {
 		res.render('signin')
+
 	} else {
-		res.render('index')
+		// Alter later to give posts of people followed
+		Post.findAll({
+			where: {
+				userId: req.session.user.id
+			}
+		}).then( posts => {
+			res.render('index', {posts: posts})
+		})
 	}	
 })
 
+app.get('/newpost', (req, res) => {
+	if (req.session.user === undefined) {
+		res.render('signin')
+	} else {
+		res.render('newpost')
+	}
+})
+
+app.get('/posts', (req, res) => {
+	if (req.session.user === undefined) {
+		res.render('signin')
+	} else {
+		Post.findAll({
+			where: {
+				userId: req.session.user.id
+			}
+		}).then( posts => {
+			res.render('posts', {posts: posts})
+		})
+	}
+})
+
+app.get('/profile', (req, res) => {
+	if (req.session.user === undefined) {
+		res.render('signin')
+	} else {
+		res.render('profile', {user: req.session.user})
+	}
+})
+
 app.post('/signin', bodyParser.urlencoded({extended: true}), (req, res) => {
-	console.log('signin', req.body)
-	let status = false
+	let signin = req.body.signin
+	// Search db for matching user
 	User.findOne({
 		where: {
-			$or: [{username: req.body.username}, {email: req.body.username}]
+			username: signin.username
 		}
 	}).then( user => {
-		if (user !== null && req.body.password === user.password) {
+		// Check if password is correct
+		if (user !== null && signin.password === user.password) {
 			// Set session and render index
 			req.session.user = user
-			status = true
-			res.send(status)
-		} else{
-			res.send(status)
+			res.redirect('/')		
+		} else {
+			// Failed sign in -> error message
+			res.render('signin', {error: 'Invalid username or password!'})
 		}
-	}).catch( () => {
-		res.send(status)
+	}).catch( (error) => {
+		// Failed sign in -> error message
+		res.render('signin', {error: 'Invalid username or password!' })
 	})
 })
 
 app.post('/signup', bodyParser.urlencoded({extended: true}), (req, res) => {
 	let user = req.body.signup
+	// Check if all fields are filled in
+	if (user.username.length === 0 || user.password.length === 0 || user.password_check === 0 || user.email.length === 0) {
+		res.render('signin', {error: 'Please fill out all fields.'})
+		return
+	}
+
+	// Check if passwords match
+	if (user.password !== user.password_check) {
+		res.render('signin', {error: 'Passwords do not match. Please enter the same password twice.'})
+		return
+	}
+
 	// Store new user in db
 	User.create( {
 		username: 	user.username,
 		password: 	user.password, // ENCRYPT HERE?!
 		email: 		user.email
 	}).then( user => {
-		console.log('user into session', user)
 		// Set session and render index
 		req.session.user = user
 		res.redirect('/')
 	}).catch( error => {
-		console.log(error)
+		// Error; Likely username or email already taken
+		res.render('signin', {error: 'Username or email already taken.'})
 	})
 })
 
+app.post('/newpost', bodyParser.urlencoded({extended: true}), (req, res) => {
+	let post = req.body.post
+	Post.create({
+		title: 	post.title,
+		text: 	post.text,
+		userId: req.session.user.id
+	}).then( post => {
+		res.redirect('/')
+	}).catch( error => {
+		res.render('newpost', {error: 'Something went wrong. Please try again.'})
+	})
+})
+
+app.post('/changepassword', bodyParser.urlencoded({extended: true}), (req, res) => {
+	if (req.body.password !== req.body.password_check) {
+		res.render('profile', {error: 'Passwords do not match. Please enter the same password twice.'})
+		return
+	}
+
+	
+})
+
 // Sync db and start server
-db.sync( {force: true} ).then( () => {
+db.sync(  ).then( () => {
 	
 	app.listen(8000, () => {
 		console.log('Server listening...')
