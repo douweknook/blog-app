@@ -1,0 +1,29 @@
+nav
+	div.nav-wrapper.cyan
+		div.container
+			a(href="/", class="brand-logo center") Logo
+			if user
+				a(href="#" data-activates="slide-out" class="button-collapse")
+					i.material-icons menu
+				ul#nav-mobile.left.hide-on-med-and-down
+					li
+						a(href="#" data-activates="slide-out" class="button-collapse show-on-large")
+							i.material-icons menu
+				//- SideNav Menu
+				ul#slide-out.side-nav
+					li
+						div.userView
+							div.background.blue
+							div
+								span.white-text.name #{user.username}
+								span.white-text.email #{user.email}
+					li
+						a(href="/newpost") Create New Post
+						a(href="/") Timeline
+						a(href="/posts") My Posts
+						a(href="/profile") Profile
+						a(href="/profile") Following
+						a(href="/profile") All users
+						a(href="/logout") Log out
+			else
+				a(href="/signin" class="right") Sign in

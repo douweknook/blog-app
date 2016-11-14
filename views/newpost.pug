@@ -1,0 +1,29 @@
+doctype html
+html
+	head
+		-var title = 'Blog App - New Post'
+		include ./templates/head.pug
+
+	body
+		header
+			include ./templates/nav.pug
+
+		main
+			if error
+				div.container
+					h1 #{error}
+
+			div.container
+				form(method="post" action="/newpost")
+					div.row
+						div.input-field.col.s12.m12.l12
+							input(type="text" name="post[title]" placeholder="Title" class="validate")
+					div.row
+						div.input-field.col.s12.m12.l12
+							textarea(name="post[text]" placeholder="Blog text" class="materialize-textarea")
+					div.row
+						div.input-field.col.s12.m12.l12
+							button(type="submit" class="waves-effect waves-light btn right") Create Post
+
+		include ./templates/footer.pug
+		include ./templates/scripts.pug

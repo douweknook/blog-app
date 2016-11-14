@@ -50,50 +50,134 @@ User.hasMany(Post); 	Post.belongsTo(User)
 User.hasMany(Comment); 	Comment.belongsTo(User)
 Post.hasMany(Comment); 	Comment.belongsTo(Post)
 
+// Create routes
+app.get('/signin', (req, res) => {
+	res.render('signin', {message: req.query.message})
+})
+
+app.get('/logout', (req, res) => {
+	req.session.destroy( error => {
+		if (error) throw error
+		res.redirect('/signin')
+	})
+})
+
 app.get('/', (req, res) => {
 	if (req.session.user === undefined) {
-		res.render('signin')
+		res.redirect('/signin')
 
 	} else {
 		// Alter later to give posts of people followed
 		Post.findAll({
-			where: {
-				userId: req.session.user.id
-			}
-		}).then( posts => {
-			res.render('index', {posts: posts})
-		})
+				include: [User],
+				order: [['createdAt', 'DESC']]
+			})
+			.then( posts => {
+				res.render('index', {posts: posts, user: req.session.user})
+			})
 	}	
 })
 
 app.get('/newpost', (req, res) => {
 	if (req.session.user === undefined) {
-		res.render('signin')
+		res.redirect('/signin')
 	} else {
-		res.render('newpost')
+		res.render('newpost', {user: req.session.user})
 	}
 })
 
 app.get('/posts', (req, res) => {
 	if (req.session.user === undefined) {
-		res.render('signin')
+		res.redirect('/signin')
 	} else {
 		Post.findAll({
-			where: {
-				userId: req.session.user.id
-			}
+			where: {userId: req.session.user.id},
+			include: [User]
 		}).then( posts => {
-			res.render('posts', {posts: posts})
+			res.render('posts', {posts: posts, user: req.session.user})
 		})
 	}
 })
 
+app.get('/post', (req, res) => {
+	Promise.all([
+		Post.findOne({
+			where: {id: req.query.id},
+			include: [User]
+		}),
+		Comment.findAll({
+			where: {postId: req.query.id},
+			include: [User]
+		})
+	]).then(allPromises => {
+		req.session.postid = req.query.id
+		res.render('post', {post:allPromises[0], comments:allPromises[1], user: req.session.user})
+	})
+})
+
 app.get('/profile', (req, res) => {
 	if (req.session.user === undefined) {
-		res.render('signin')
+		res.redirect('/signin')
 	} else {
-		res.render('profile', {user: req.session.user})
+		res.render('profile', {user: req.session.user, message: req.query.message})
 	}
+})
+
+// app.get('/users', (req, res) => {
+// 	// if (req.session.user === undefined) {
+// 	// 	res.redirect('/signin')
+// 	// } else {
+// 		let array = []
+// 		User.findAll()
+// 			.then( users => {
+// 				users.map( user => {
+					
+// 					Post.count({ where: {userId: user.id} })
+// 						.then( count => {
+// 							array.push({
+// 								username: 		user.username,
+// 								email: 			user.email,
+// 								total_posts: 	count
+// 							})
+// 						})
+// 						.then( () => {
+// 							console.log(array)
+// 						})
+// 					})
+
+// 				})
+// 	// }
+// })
+
+app.post('/changepassword', bodyParser.urlencoded({extended: true}), (req, res) => {
+	if (req.body.password.length === 0 || req.body.password_check.length === 0) {
+		res.redirect('/profile/?message=' + encodeURIComponent('Please fill in both password fields.'))
+		return
+	}
+
+	if (req.body.password !== req.body.password_check) {
+		res.redirect('/profile/?message=' + encodeURIComponent('Passwords do not match. Please enter the same password twice.'))
+		return
+	}
+
+	User.update({
+		password: req.body.password
+	}, {
+		where: { id: req.session.user.id }
+	}).then( () => {
+		res.redirect('/profile/?message=' + encodeURIComponent('Password changed'))
+	})
+})
+
+app.post('/deleteaccount', (req, res) => {
+	User.destroy({
+		where: { id: req.session.user.id }
+	}).then( () => {
+		req.session.destroy( error => {
+        	if(error) throw error;
+        })
+		res.redirect('/signin/?message=' + encodeURIComponent('Account deleted'))
+	})
 })
 
 app.post('/signin', bodyParser.urlencoded({extended: true}), (req, res) => {
@@ -107,7 +191,7 @@ app.post('/signin', bodyParser.urlencoded({extended: true}), (req, res) => {
 		// Check if password is correct
 		if (user !== null && signin.password === user.password) {
 			// Set session and render index
-			req.session.user = user
+			req.session.user = {id:user.id, username:user.username, email:user.email}
 			res.redirect('/')		
 		} else {
 			// Failed sign in -> error message
@@ -140,7 +224,7 @@ app.post('/signup', bodyParser.urlencoded({extended: true}), (req, res) => {
 		email: 		user.email
 	}).then( user => {
 		// Set session and render index
-		req.session.user = user
+		req.session.user = {id:user.id, username:user.username, email:user.email}
 		res.redirect('/')
 	}).catch( error => {
 		// Error; Likely username or email already taken
@@ -157,22 +241,25 @@ app.post('/newpost', bodyParser.urlencoded({extended: true}), (req, res) => {
 	}).then( post => {
 		res.redirect('/')
 	}).catch( error => {
-		res.render('newpost', {error: 'Something went wrong. Please try again.'})
+		res.render('newpost', {user: req.session.user, error: 'Something went wrong. Please try again.'})
 	})
 })
 
-app.post('/changepassword', bodyParser.urlencoded({extended: true}), (req, res) => {
-	if (req.body.password !== req.body.password_check) {
-		res.render('profile', {error: 'Passwords do not match. Please enter the same password twice.'})
-		return
+app.post('/addcomment', bodyParser.urlencoded({extended: true}), (req, res) => {
+	if (req.body.comment.length === 0) {
+		res.redirect('/post/?id='+req.session.postid)
 	}
-
-	
+	Comment.create({
+		text: 	req.body.comment,
+		postId: req.session.postid,
+		userId: req.session.user.id
+	}).then( () => {
+		res.redirect('/post/?id='+req.session.postid)
+	})
 })
 
 // Sync db and start server
 db.sync(  ).then( () => {
-	
 	app.listen(8000, () => {
 		console.log('Server listening...')
 	})

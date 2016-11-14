@@ -1,14 +1,12 @@
 doctype html
 html
 	head
-		link(href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet")
-		link(type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection")
-		link(type="text/css" rel="stylesheet" href="css/style.css")
-		title Blog App
+		-var title = 'Blog App - Sign In'
+		include ./templates/head.pug
 
 	body
 		nav
-			div.nav-wrapper
+			div.nav-wrapper.cyan
 				div.container
 					a(href='/', class='brand-logo') Logo
 
@@ -19,8 +17,8 @@ html
 			div.row
 				div.col.s12.m12.l12
 					ul.tabs
-						li.tab.col.s3: a(href='#signin' ) Sign In
-						li.tab.col.s3: a(href='#signup' ) Sign Up
+						li.tab.col.s3: a(href='#signin' class="cyan-text") Sign In
+						li.tab.col.s3: a(href='#signup' class="cyan-text") Sign Up
 
 			div#signin.col.s12
 				form(method="post" action="/signin")
@@ -32,7 +30,7 @@ html
 							input(type="password" name="signin[password]" placeholder="Password" class="validate")
 					div.row
 						div.input-field.col.s12.m12.l12
-							button(type="submit" class="waves-effect waves-light btn right") Sign In
+							button(type="submit" class="waves-effect waves-light btn right orange") Sign In
 
 			div#signup.col.s12
 				form(method="post" action="/signup")
@@ -50,16 +48,16 @@ html
 							input(type="email" name="signup[email]" placeholder="Email" class="validate")
 					div.row
 						div.input-field.col.s12.m12.l12
-							button(type="submit" class="waves-effect waves-light btn right") Sign Up
+							button(type="submit" class="waves-effect waves-light btn right orange") Sign Up
 
 		main
 
-		footer.page-footer
+		footer.page-footer.cyan
 			div.container
 				div.row
 					div.col.s12.m12.l12
 						h5.white-text Footer
 
 
-		script(type="text/javascript" src="js/jquery.min.js")
-		script(type="text/javascript" src="js/materialize.min.js")
+		script(type="text/javascript" src="/js/jquery.min.js")
+		script(type="text/javascript" src="/js/materialize.min.js")

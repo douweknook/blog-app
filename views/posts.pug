@@ -1,7 +1,7 @@
 doctype html
 html
 	head
-		-var title = 'Blog App - Home'
+		-var title = 'Blog App - My Posts'
 		include ./templates/head.pug
 
 	body
@@ -15,7 +15,8 @@ html
 						div.col.s12.m12.l12
 							div.card
 								div.card-content.text-white
-									span.card-title: a(href="/post/?id="+ post.id) #{post.title}
+									span.card-title
+										a(href="/post/?id="+ post.id) #{post.title}
 									p #{post.text}
 									p Posted by #[span.orange-text #{post.user.username}]
 
