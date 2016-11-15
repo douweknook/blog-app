@@ -33,7 +33,7 @@ db.User.hasMany(db.Comment); 	db.Comment.belongsTo(db.User)
 db.Post.hasMany(db.Comment); 	db.Comment.belongsTo(db.Post)
 
 db.conn.sync().then( ()=>{
-	console.log('Database sync succesful')
+	console.log('Database sync successful')
 }, (err) => {
 	console.log('Database sync failed: '+err)
 } )

@@ -27,3 +27,11 @@ main {
 .card-error-margin {
 	margin: 5px;
 }
+
+.message {
+	white-space: pre-wrap;
+}
+
+.divider-margin {
+	margin: 15px 0px;
+}

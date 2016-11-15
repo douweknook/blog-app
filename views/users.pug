@@ -13,12 +13,19 @@ html
 				table.striped.responsive-table
 					thead
 						tr
+							th #
 							th Username
 							th Email
 							th Total Posts
-							th Last Post Title
-							th Last Post Date
 					tbody
+						- var i = 1
+						for user in users
+							tr
+								td=i
+								td #{user.username}
+								td #{user.email}
+								td #{user.postCount}
+								- i++
 						
 
 

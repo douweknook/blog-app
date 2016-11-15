@@ -14,14 +14,16 @@ html
 					div.col.s12.m12.l12
 						div.card
 							div.card-content.text-white
+								
 								div.row
 									div.col.s12.m12.l12
 										span.card-title #{post.title}
-										p #{post.text}
-										p Posted by #{post.user.username} on #{post.createdAt}
+										p.message #{post.text}
 										br
+										p Posted by #[span.orange-text #{post.user.username}] on #[span.orange-text #{post.createdAt}]
+										
 								
-								div.divider
+								div.divider.divider-margin
 								
 								if user
 									div.row
@@ -29,16 +31,17 @@ html
 											form(method="post" action="/addcomment")
 												div.input-field.col.s12.m12.l12
 													textarea(name="comment" data-id=post.id, placeholder="Add your comment here" class="materialize-textarea")
-													button(type="submit" class="waves-effect waves-light btn right") Add Comment
+													button(type="submit" class="waves-effect waves-light btn right orange") Add Comment
 
-									div.divider
+									div.divider.divider-margin
 								
 								for comment in comments
 									div.row
 										div.col.s12.m12.l12
-											p #{comment.text}
-											p Comment by #{comment.user.username}
-									div.divider
+											p.message #{comment.text}
+											br
+											p Comment by #[span.orange-text #{comment.user.username}]
+									div.divider.divider-margin
 
 								
 
