@@ -19,3 +19,11 @@ main {
 .tabs .indicator {
 	background-color: #00bcd4;
 }
+
+.card-less-padding {
+	padding: 5px;
+}
+
+.card-error-margin {
+	margin: 5px;
+}

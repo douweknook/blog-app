@@ -10,8 +10,12 @@ html
 				div.container
 					a(href='/', class='brand-logo') Logo
 
-		div.container
-			p.flow-text #{error}
+		if error
+			div.container
+				div.row
+					div.col.s12.m12.l12
+						div.card-panel.card-less-padding.red.white-text
+							p.card-error-margin #{error}
 
 		div.container
 			div.row
