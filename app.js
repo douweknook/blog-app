@@ -35,6 +35,7 @@ app.get('/users', (req, res) => {
 				group: ['username']
 			})
 		]).then( result => {
+			console.log(result[2])
 			if (result[0].length === result[1].length) {
 				let users = []
 				for (var i = 0; i < result[0].length; i++) {
