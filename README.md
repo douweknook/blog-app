@@ -9,6 +9,11 @@ The blog app contains the following features:
 - Add and view comments to each post
 - Profile settings: change password and delete account
 
+#Database Structure
+- User Model (passwords are encrypted)
+|id                 | username         | email           | password   | createdAt   | UpdatedAt |
+| integer (unique)  | string (unique)  | string (unique) | string     | timestamp   | timestamp |
+
 
 
 
