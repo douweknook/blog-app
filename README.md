@@ -1,11 +1,14 @@
-# business-website
+#Blog App
+This app was made as an assignment in the NYCDA JavaScript course.
+The blog app contains the following features:
+- Registration: Sign in, sign up and log out
+- Create blog posts
+- Overview of all blog posts
+- Overview of your own blog posts
+- Overview of all users
+- Add and view comments to each post
+- Profile settings: change password and delete account
 
-This is a business page made by Sergio Reyes, Rens Greveling en Douwe Knook as an assignment for the BSSA NYCDA course.
 
-Website contains 5 pages:
-- Home: the homepage
-- Products: a page with an overview of products
-- Pictures: a picture gallery
-- Team: page with all the team members
-- Social: twitter feed
+
 
