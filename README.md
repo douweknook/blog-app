@@ -12,6 +12,7 @@ The blog app contains the following features:
 #Database Structure
 - User Model (passwords are encrypted)
 |id                 | username         | email           | password   | createdAt   | UpdatedAt |
+|-------------------|------------------|-----------------|------------|-------------|-----------|
 | integer (unique)  | string (unique)  | string (unique) | string     | timestamp   | timestamp |
 
 
