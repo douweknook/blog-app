@@ -17,17 +17,19 @@ html
 							th Username
 							th Email
 							th Total Posts
+							th Latest Post Title
+							th Latest Post Date
 					tbody
 						- var i = 1
 						for user in users
 							tr
-								td=i
-								td #{user.username}
+								td #{i}
+								td: a(href="/users/profile/?id="+ user.id) #{user.username}
 								td #{user.email}
 								td #{user.postCount}
+								td: a(href="/post/?id="+ user.lastPostId) #{user.lastPostTitle}
+								td #{user.lastPostDate}
 								- i++
-						
-
 
 		include ./templates/footer.pug
 		include ./templates/scripts.pug

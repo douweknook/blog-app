@@ -1,7 +1,7 @@
 doctype html
 html
 	head
-		-var title = 'Blog App - My Posts'
+		-var title = 'Blog App - Home'
 		include ./templates/head.pug
 
 	body
@@ -10,6 +10,18 @@ html
 
 		main
 			div.container
+				div.row
+					div.col.s12.m12.l12
+						h5 Profile Information
+						table.account
+							tbody
+								tr
+									td Username:
+									td #{profileUser.username}
+								tr
+									td Email:
+									td #{profileUser.email}
+
 				for post in posts
 					div.row
 						div.col.s12.m12.l12
@@ -18,7 +30,7 @@ html
 									span.card-title
 										a(href="/post/?id="+ post.id) #{post.title}
 									p.message #{post.text}
-									p Posted on #[span.orange-text #{post.date}]
+									p Posted on #[span.orange-text #{post.createdAt}]
 
 		include ./templates/footer.pug
 		include ./templates/scripts.pug

@@ -1,12 +1,11 @@
 const sequelize		= require('sequelize')
-const dotenv		= require('dotenv').load()
 
 let db = {}
 
 // Initialize db
 db.conn = new sequelize(process.env.DB_NAME, process.env.DB_USERNAME, process.env.DB_PASSWORD, {
-	server: 	'localhost',
-	dialect: 	'postgres'
+	server: 	process.env.DB_SERVER,
+	dialect: 	process.env.DB_DIALECT
 })
 
 // Define db models

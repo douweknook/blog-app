@@ -24,9 +24,4 @@ app.use(session({
 	saveUninitialized: true
 }))
 
-// Listen op localhost:8000
-app.listen(8000, () => {
-	console.log('Server listening...')
-})
-
 module.exports = app

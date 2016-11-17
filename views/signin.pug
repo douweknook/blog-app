@@ -17,6 +17,9 @@ html
 						div.card-panel.card-less-padding.red.white-text
 							p.card-error-margin #{error}
 
+		div#error_message.container
+			
+
 		div.container
 			div.row
 				div.col.s12.m12.l12
@@ -28,9 +31,11 @@ html
 				form(method="post" action="/signin")
 					div.row
 						div.input-field.col.s12.m12.l12
+							label Username:
 							input(type="text" name="signin[username]" placeholder="Username" class="validate" required)
 					div.row
 						div.input-field.col.s12.m12.l12
+							label Password:
 							input(type="password" name="signin[password]" placeholder="Password" class="validate" required)
 					div.row
 						div.input-field.col.s12.m12.l12
@@ -40,19 +45,23 @@ html
 				form(method="post" action="/signup")
 					div.row
 						div.input-field.col.s12.m12.l12
+							label Username (may only contain letters, numbers and underscores):
 							input(type="text" name="signup[username]" placeholder="Username" class="validate" required)
 					div.row
 						div.input-field.col.s12.m12.l12
-							input(type="password" name="signup[password]" placeholder="Password" class="validate" required)
+							label Password:
+							input(type="password" name="signup[password]" placeholder="Password" class="validate" required minlength=8)
 					div.row
 						div.input-field.col.s12.m12.l12
-							input(type="password" name="signup[password_check]" placeholder="Re-enter Password" class="validate" required)
+							label Confirm password:
+							input(type="password" name="signup[password_check]" placeholder="Re-enter Password" class="validate" required minlength=8)
 					div.row
 						div.input-field.col.s12.m12.l12
+							label Email:
 							input(type="email" name="signup[email]" placeholder="Email" class="validate" required)
 					div.row
 						div.input-field.col.s12.m12.l12
-							button(type="submit" class="waves-effect waves-light btn right orange") Sign Up
+							button(onClick=("return validate()") type="submit" class="waves-effect waves-light btn right orange") Sign Up
 
 		main
 
@@ -65,3 +74,35 @@ html
 
 		script(type="text/javascript" src="/js/jquery.min.js")
 		script(type="text/javascript" src="/js/materialize.min.js")
+		script.
+			function validate() {
+				var username = validateUsername()
+				var password = checkPasswords()
+				if (username && password) {
+					return true
+				} else {
+					return false
+				}
+			}
+
+			function validateUsername() {
+				var username = $("input[name='signup[username]']").val()
+				var regex = /^\w+$/
+				if (regex.test(username)) {
+					return true
+				} else {
+					$('#error_message').html('<div class="row"><div class="col s12 m12 l12"><div class="card-panel card-less-padding red white-text"><p class="card-error-margin">Username may only contain alphabetical and numerical characters and underscores.</p></div></div></div>')
+					return false
+				}
+			}
+
+			function checkPasswords() {
+				var pass1 = $("input[name='signup[password]']").val()
+				var pass2 = $("input[name='signup[password_check]']").val()
+				if (pass1 === pass2) {
+					return true
+				} else {
+					$('#error_message').html('<div class="row"><div class="col s12 m12 l12"><div class="card-panel card-less-padding red white-text"><p class="card-error-margin">Passwords do not match!</p></div></div></div>')
+					return false
+				}
+			}  

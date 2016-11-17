@@ -17,7 +17,7 @@ html
 								div.card-content.text-white
 									span.card-title: a(href="/post/?id="+ post.id) #{post.title}
 									p.message #{post.text}
-									p Posted by #[span.orange-text #{post.user.username}]
+									p Posted by #[span.orange-text #{post.user.username}] at #[span.orange-text #{post.date}]
 
 		include ./templates/footer.pug
 		include ./templates/scripts.pug

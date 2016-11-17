@@ -20,7 +20,7 @@ html
 										span.card-title #{post.title}
 										p.message #{post.text}
 										br
-										p Posted by #[span.orange-text #{post.user.username}] on #[span.orange-text #{post.createdAt}]
+										p Posted by #[span.orange-text #{post.user.username}] on #[span.orange-text #{post.date}]
 										
 								
 								div.divider.divider-margin
@@ -40,11 +40,8 @@ html
 										div.col.s12.m12.l12
 											p.message #{comment.text}
 											br
-											p Comment by #[span.orange-text #{comment.user.username}]
+											p Comment by #[span.orange-text #{comment.user.username}] at #[span.orange-text #{comment.date}]
 									div.divider.divider-margin
-
-								
-
 
 		include ./templates/footer.pug
 		include ./templates/scripts.pug
