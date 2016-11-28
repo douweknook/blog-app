@@ -1,0 +1,27 @@
+$tabs-background-color: #00bcd4;
+
+body {
+	display: flex;
+	min-height: 100vh;
+	flex-direction: column;
+}
+
+main { flex: 1 0 auto; }
+
+.align-right { text-align: right; }
+
+.collapsible-padding { padding: 2em; }
+
+.tabs {
+	.indicator {
+		background-color: $tabs-background-color;
+	}
+}
+
+.card-less-padding { padding: 5px; }
+
+.card-error-margin { margin: 5px; }
+
+.message { white-space: pre-wrap; }
+
+.divider-margin { margin: 15px 0px; }

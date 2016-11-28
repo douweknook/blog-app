@@ -1,37 +1,30 @@
 body {
-	display: flex;
-	min-height: 100vh;
-	flex-direction: column;
-}
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column; }
 
 main {
-	flex: 1 0 auto;
-}
+  flex: 1 0 auto; }
 
 .align-right {
-	text-align: right;
-}
+  text-align: right; }
 
 .collapsible-padding {
-	padding: 2em;
-}
+  padding: 2em; }
 
 .tabs .indicator {
-	background-color: #00bcd4;
-}
+  background-color: #00bcd4; }
 
 .card-less-padding {
-	padding: 5px;
-}
+  padding: 5px; }
 
 .card-error-margin {
-	margin: 5px;
-}
+  margin: 5px; }
 
 .message {
-	white-space: pre-wrap;
-}
+  white-space: pre-wrap; }
 
 .divider-margin {
-	margin: 15px 0px;
-}
+  margin: 15px 0px; }
+
+/*hello*/

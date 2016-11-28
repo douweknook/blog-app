@@ -74,7 +74,7 @@ router.post('/signup', (req, res) => {
 
 	// Check username for any weird characters
 	let regex = /^\w+$/
-	if (regex.test(user.username)) {
+	if (!regex.test(user.username)) {
 		res.render('signin', {error: 'Username may only contain alphabetical and numerical characters and underscores.'})
 		return
 	}
